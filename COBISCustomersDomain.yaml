@@ -1,0 +1,2001 @@
+openapi: 3.0.0
+
+info:
+  description: 'This is the domain for definitions of COBIS Customer module. This is all about customers objects like, identification, natural and legal persons, catalogs, etc.'
+  version: '1.0.1'
+  title: 'COBIS Customers Domain'
+
+components:
+  schemas:
+    # OBJECTS
+    Address: # table:cl_direccion
+      description: 'Dirección.'
+      type: object      
+      properties:
+        #di_ente
+        code: # field:di_direccion
+          $ref: '#/components/schemas/CodeNumber'
+        address: #field:di_descripcion
+          description: 'Dirección de correspondencia.'    
+        colony: #field:di_parroquia
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/ZipCode'
+        city: #field:di_ciudad
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/City'
+        type: #field:di_tipo
+          $ref: '#/components/schemas/AddressType'
+        #di_telefono
+        sector: #field:di_sector
+          $ref: '#/components/schemas/Sector'        
+        zone: #field:di_zona
+          $ref: '#/components/schemas/Zone'           
+        branch: # field:di_oficina
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Branch'
+        creationDate: # field:di_fecha_registro        
+          description: 'Fecha de creación.'
+          type: string
+          format: date-time
+        lastUpdatedDate: # field:di_fecha_modificacion
+          description: 'Fecha de modificación.'
+          type: string
+          format: date-time
+        valid: # field:di_vigencia
+          description: 'Indicador de vigencia.'
+          type: boolean
+          nullable: false
+        verified: # field:di_verificado
+          description: 'Indicador de verificado.'
+          type: boolean
+          nullable: false
+        clerk: # field:di_funcionario > cobis..cl_funcionario.fu_login
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Clerk'
+        #di_fecha_ver
+        primaryAddress: #field:di_principal
+          description: 'Dirección principal.'
+          type: boolean
+          nullable: false
+        neighbourhood: #field:di_barrio
+          description: 'Vecindario.'
+          type: string
+          maxLength: 40        
+        province: #field:di_provincia
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Province'
+        #di_tienetel
+        #di_rural_urb
+        #di_observacion
+        #di_obs_verificado
+        #di_extfin
+        country: #field:di_pais
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Country'
+        #di_departamento
+        #di_tipo_prop
+        #di_rural_urbano
+        zipCode: #field:di_codpostal
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/ZipCode'    
+        #di_casa
+        street: #field:di_calle
+          description: 'Información de la calle.'
+          type: string
+          maxLength: 70          
+        #di_codbarrio
+        #di_correspondencia
+        #di_alquilada
+        #di_cobro
+        #di_otrasenas
+        #di_canton
+        #di_distrito
+        #di_montoalquiler
+        #di_edificio
+        #di_so_igu_co
+        #di_fact_serv_pu
+        #di_nombre_agencia
+        #di_fuente_verif
+        #di_tiempo_reside
+        externalNumber: #field:di_nro
+          description: 'Número externo.'
+          type: integer
+          format: int32        
+        #di_nro_residentes
+        internalNumber: #field:di_nro_interno
+          description: 'Número interno.'
+          type: integer
+          format: int32          
+        #di_negocio
+        #di_poblacion
+        #di_referencias_dom
+        #di_otro_tipo
+        #di_localidad      
+        geolocatization:
+          $ref: '#/components/schemas/Geolocalization'
+
+    Business: #table: cobis..cl_negocio_cliente
+      description: 'Negocios del cliente.'
+      type: object
+      properties:
+        code: #field:nc_codigo
+          description: 'Código del negocio.'
+          type: integer
+          format: int32
+          minimum: 1        
+        #field:nc_ente
+        name: #field:nc_nombre
+          description: 'Nombre del negocio.'
+          type: string
+          maxLength: 60
+        #field:nc_giro
+        openDate: #field:nc_fecha_apertura
+          description: 'Fecha de apertura.'
+          type: string
+          format: date-time
+        #field:nc_calle
+        #field:nc_nro
+        #field:nc_colonia
+        #field:nc_localidad
+        #field:nc_municipio
+        #field:nc_estado
+        #field:nc_codpostal
+        #field:nc_pais
+        #field:nc_telefono
+        #field:nc_actividad_ec
+        #field:nc_tiempo_actividad
+        #field:nc_tiempo_dom_neg
+        entrepreneurial: #field:nc_emprendedor
+          description: 'Indica si es emprendedor.'
+          type: boolean
+          nullable: false
+        #field:nc_recurso
+        monthlyIncome: #field:nc_ingreso_mensual
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'
+          description: 'Ingreso mensual.'            
+        #field:nc_tipo_local
+        status: #field:nc_estado_reg
+          description: 'Estado.'
+          type: string
+          minLength: 1
+          maxLength: 1
+        #field:nc_destino_credito
+        #field:nc_sector
+        #field:nc_subsector
+        #field:nc_misma_dir
+        #field:nc_nro_interno
+        #field:nc_referencia_neg
+        #field:nc_rfc_neg
+        #field:nc_dias_neg
+        #field:nc_hora_ini
+        #field:nc_hora_fin
+        #field:nc_atiende
+        #field:nc_empleados
+        businessAnalysis:
+          $ref: '#/components/schemas/BusinessAnalysis'
+
+    BusinessAnalysis: #table: cobis..cl_analisis_negocio //TODO: Validar campos de la entidad
+      description: 'Análisis del negocio.'
+      type: object
+      properties:
+        #field:an_cliente_id
+        #field:an_negocio_codigo
+        monthlyAverageSales: #field:an_ventas_prom_mes
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        monthlyAveragePurchases: #field:an_compras_prom_mes
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        income: #field:an_renta_neg
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        transportAmount: #field:an_transporte_neg
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        privateExpensesAmount: #field:an_personal_neg
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        taxAmount: #field:an_impuestos_neg
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        serviceLightAmount: #field:an_electrica_neg
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        serviceWaterAmount: #field:an_agua_neg
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        serviceTelephoneAmount: #field:an_telefono_neg
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        otherAmount: #field:an_otros_neg
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        #field:an_inventario
+        #field:an_inversion_neg
+        #field:an_frecuencia_inv
+        #field:an_presta
+        #field:an_frecuencia_cobro
+        lending: #field:an_debe_prestamo
+          description: 'Indica si tiene un prestamo activo.'
+          type: string
+          minLength: 1
+          maxLength: 1           
+        paymentOfDues: #field:an_cuota_pago
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                                                 
+        #field:an_frecuencia_pago
+        available: #field:an_disponible
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                                                 
+        profit: #field:an_ganancia_neg
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                                                 
+        #field:an_frecuencia_util
+        monthlyRepaymnetCapacity: #field:an_capacidad_pago_mes
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                                         
+        product: #field:an_producto
+          description: 'Origen del monto extra.'
+          type: string
+          maxLength: 60        
+        percentOfSales: #field:an_porcentaje_venta_regs
+          description: 'Origen del monto extra.'
+          type: number
+          format: float      
+        houseValue: #field:an_valor_vivienda
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                                 
+        businessValue: #field:an_valor_negocio
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                                 
+        vehicleValue: #field:an_valor_vehiculo
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                                 
+        furnitureValue: #field:an_valor_mobiliario
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                                 
+        otherValue: #field:an_valor_otros
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                                 
+        extraIncome: #field:an_ingresos_extra
+          description: 'Origen del ingreso extra.'
+          type: string
+          minLength: 1
+          maxLength: 1        
+        extraAmount: #field:an_monto_extra
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                         
+        originExtraAmount: #field:an_origen_extra
+          description: 'Origen del monto extra.'
+          type: string
+          maxLength: 20
+        foodCostAmount: #field:an_gastos_alimentos
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        rentalHousingCostAmount: #field:an_gastos_renta_viv
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        serviceLightCostAmount: #field:an_gastos_energia_elect
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        serviceWaterCostAmount: #field:an_gastos_agua
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        serviceTelephoneCostAmount: #field:an_gastos_telefono
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        serviceTvCostAmount: #field:an_gastos_tv
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        healthCostAmount: #field:an_gastos_salud
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        transportationCostAmount: #field:an_gastos_transp
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        educationCost: #field:an_gastos_educ
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        gasCostAmount: #field:an_gastos_gas
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        clothingCost: #field:an_gastos_vestido
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+        otherCost: #field:an_gastos_otros
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                 
+
+    Customer: # TODO: Revisar implementación, definir persona natural y jurídica.
+      description: 'Cliente o prospecto de cliente que está interesado en adquirir un producto financiero.'
+      type: object
+      properties:
+        code: #field:en_ente
+          $ref: '#/components/schemas/CustomerCode'
+        subtype: #en_subtipo: 
+          description: > 
+            'Indica el tipo de cliente:'
+            * P: Persona
+            * C: Compañía 
+          type: string
+          maxLength: 1
+          enum: [P, C]
+        identification: #field:en_ced_ruc > Identification.number
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Identification'
+          description: 'Identificación del cliente o prospecto.'
+        # field:en_tipo_ced > Identificacion.type
+        names: # field:en_nombre
+          description: 'Nombres.'
+          type: string
+          minLength: 1
+          maxLength: 64
+        surname: # field:p_p_apellido
+          description: 'Primer apellido.'
+          type: string
+          minLength: 1
+          maxLength: 16
+        secondSurname: # field:p_s_apellido
+          description: 'Segundo apellido.'
+          type: string
+          minLength: 1
+          maxLength: 16
+        status: # field:en_estado
+          description: 'Estado.'
+          type: string
+          minLength: 1
+          maxLength: 1
+        subsidiary: # field:en_filial
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Subsidiary'
+        branch: # field:en_oficina
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Branch'
+        enrollmentDate: # field:en_fecha_crea
+          description: 'Fecha de creación.'
+          type: string
+          format: date-time
+        lastUpdatedDate: # field:en_fecha_mod
+          description: 'Fecha de la última modificación.'
+          type: string
+          format: date-time
+        producerType: #field:en_casilla_def
+          $ref: '#/components/schemas/ProducerType'
+        #field:en_pais > Identificacion.issueCity.country.code
+        officer: #field:en_oficial
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Officer'
+        activity: #field:en_actividad
+          $ref: '#/components/schemas/Activity'
+        retention: #field:en_retencion
+          description: 'Indica si el cliente tiene retención.'
+          type: boolean
+          nullable: false
+        #field:en_mala_referencia
+        comment: #field:en_comentario
+          description: 'Comentarios'
+          type: string
+          maxLength: 254
+        validatedDocument: #field:en_doc_validado
+          description: 'Indica si el número de documento está validado.'
+          type: boolean
+          nullable: false
+        reportedInSuperBan: #field:en_rep_superban
+          description: 'Indica si el cliente está reportado en SuperBan.'
+          type: boolean
+          nullable: false                   
+        gender: #field: p_sexo
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Gender'
+        birthDate: #field:p_fecha_nac
+          description: 'Fecha de nacimiento'
+          type: string
+          format: date
+        birthCity: # field:p_ciudad_nac
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/City'
+          description: 'Ciudad de nacimiento.'
+        #field:p_lugar_doc > Identificacion.issueCity.code
+        profession: #field:p_profesion
+          $ref: '#/components/schemas/Profession'
+        maritalStatus: #field:p_estado_civil
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/MaritalStatus'
+        income: #field:p_nivel_ing
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'
+        outgoings: #field:p_nivel_egr
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'
+        levelOfEducation: #field:p_nivel_estudio
+          $ref: '#/components/schemas/LevelOfEducation'
+        typeOfPerson: #field:p_tipo_persona
+          $ref: '#/components/schemas/TypeOfPerson'        
+        typeOfHousing: #field:p_tipo_vivienda
+          $ref: '#/components/schemas/TypeOfHousing'        
+        customerQualification: #field:p_calif_cliente
+          $ref: '#/components/schemas/CustomerQualification'         
+        issueDate: #field:p_fecha_emision
+          description: 'Fecha de emisión.'
+          type: string
+          format: date-time        
+        qualification: #field:c_posicion
+          $ref: '#/components/schemas/Qualification' 
+        typeOfCompany: #field:c_tipo_compania
+          $ref: '#/components/schemas/TypeOfCompany'         
+        assets: #field:c_activo
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'        
+        liabilities: #field:c_pasivo
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'        
+        group: #field:c_es_grupo
+          description: 'Indica si es un grupo.'
+          type: boolean
+          nullable: false        
+        fullname: #field:en_nomlar
+          description: 'Nombre completo de la compañía.'
+          type: string
+          maxLength: 254          
+        kindOfSociety: #field:c_tipo_soc
+          $ref: '#/components/schemas/KindOfSociety'
+        totalAssets: #field:c_total_activos
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'        
+        employeesNumber: #field:c_num_empleados
+          description: 'Número de empleados.'
+          type: integer
+          format: int32
+          maximum: 32767  
+        acronym: #field:c_sigla
+          description: 'Sigla de la compañía.'
+          type: string
+          maximum: 25          
+        valid: #field:c_vigencia
+          description: 'Indicador de vigencia.'
+          type: boolean
+          nullable: false        
+        verified: #field:c_verificado
+          description: 'Indicador de verificado.'
+          type: boolean
+          nullable: false        
+        customerSituation: #field:en_situacion_cliente
+          $ref: '#/components/schemas/CustomerSituation'
+        technicalEqity: #field:en_patrimonio_tec
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'
+        grossEquityDate: #field:en_fecha_patri_bruto
+          description: 'Fecha de patrimonio bruto.'
+          type: string
+          format: date-time         
+        largeContributor: #field:en_gran_contribuyente
+          description: 'Indica si es gran contribuyente.'
+          type: boolean
+          nullable: false           
+        incomeStatement: #field:en_reestructurado
+          description: 'Declara renta.'
+          type: boolean
+          nullable: false         
+        linkage: #field:en_vinculacion
+          description: 'Indica si es por vinculación.'
+          type: boolean
+          nullable: false           
+        typeOfRelationShip: #field:en_tipo_vinculacion
+          $ref: '#/components/schemas/TypeOfRelationShip'        
+        preferencialCustomer: #field:en_preferen
+          description: 'Indica si el cliente es preferencial.'
+          type: boolean
+          nullable: false          
+        exempt: #field:en_exc_sipla
+          description: 'Exento de reporte SIPLA.'
+          type: boolean
+          nullable: false         
+        exempt3000: #field:en_exc_por2
+          description: 'Exento de 3 x 1000.'
+          type: boolean
+          nullable: false          
+        category: #field:en_categoria
+          $ref: '#/components/schemas/Category'
+        exemptRIOE: #field:en_rep_sib
+          description: 'Exento RIOE.'
+          type: boolean
+          nullable: false         
+        indebtednessFinancialSector: #field:en_pas_finan
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'        
+        indebtedDateFinancialSector: #field:en_fpas_finan
+          description: 'Fecha de endeudamiento en el sector financiero.'
+          type: string
+          format: date-time         
+        manageInternationalOperations: #field:en_relacint
+          description: 'Indica si maneja operaciones internacionales.'
+          type: boolean
+          nullable: false         
+        nonOperatingIncome: #field:en_otringr
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                
+        documentsInFolders: #field:en_doctos_carpeta
+          description: 'Indica si tiene documentos en carpetas.'
+          type: boolean
+          nullable: false         
+        cycleNumber:  #field: en_nro_ciclo
+          type: integer
+          format: int32
+        taxIdentification: #field:en_rfc > Identification.number
+          allOf: 
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Identification'
+          description: 'Identificación tributaria.'
+        externalCode: #field:en_banco
+          description: 'Código de referencia externo.'
+          type: string
+          maxLength: 30
+        birthCountry: #field: en_pais_nac
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Country'
+          description: 'Pais de nacimiento.'
+        secondaryIdentification: #field:en_numero_iden_c > Identification.number, field:en_tipo_iden_c > Identification.type
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Identification'
+          description: 'Segunda identificación.'
+        electronicSignature: #field:en_firma_electronica
+          description: 'Firma electrónica'
+          type: string
+          maxLength: 30        
+        
+        #TABLA AUXILIAR
+        cobisStatus: # field:ea_estado > cobis..cl_ente_aux.ea_estado
+          description: >
+            'Estado COBIS:'
+              * P: Prospecto
+              * A: Activo
+          type: string
+          enum: [P,A]
+          minLength: 1
+          maxLength: 1
+        economicSector: #field:ea_sector_eco
+          $ref: '#/components/schemas/EconomicSector'        
+        sourceOfIncome: #field:ea_fuente_ing
+          $ref: '#/components/schemas/SourceOfIncome'        
+        #field:ea_cat_aml  
+        disability: #field:ea_tipo_discapacidad
+          $ref: '#/components/schemas/Disability'        
+        levelOfOutgoings: #field:ea_nivel_egresos
+          $ref: '#/components/schemas/LevelOfOutgoings'
+        #semofoSIC
+        emails:
+          description: 'Correos electrónicos.'
+          type: array
+          items:
+            $ref: '#/components/schemas/Email'
+        addresses:
+          description: 'Direcciones de correspondencia.'
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+        phones:
+          description: 'Teléfonos de contacto.'
+          type: array
+          items:
+            $ref: '#/components/schemas/Phone' 
+        businesses:
+          description: 'Negocios del cliente.'
+          type: array
+          items: 
+            $ref: '#/components/schemas/Business'      
+        personalReferences:
+          description: 'Referencias personales del cliente.'
+          type: array
+          items:     
+            $ref: '#/components/schemas/PersonalReference'   
+        relationShips:
+          type: array
+          items: 
+            $ref: '#/components/schemas/RelationShip'  
+
+    Email: # table:cl_direccion
+      description: 'Correo electrónico.'
+      type: object
+      properties:
+        #di_ente
+        code: # field:di_direccion
+          $ref: '#/components/schemas/CodeNumber'
+        mail: # field:di_descripcion
+          description: 'Dirección de correo electrónico.'
+          type: string
+          maxLength: 254
+        #di_parroquia
+        #di_ciudad
+        #di_tipo
+        #di_telefono
+        #di_sector
+        #di_zona        
+        branch: # field:di_oficina
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Branch'
+        creationDate: # field:di_fecha_registro
+          description: 'Fecha de creación.'
+          type: string
+          format: date-time
+        lastUpdatedDate: # field:di_fecha_modificacion
+          description: 'Fecha de modificación.'
+          type: string
+          format: date-time
+        valid: # field:di_vigencia
+          description: 'Indicador de vigencia.'
+          type: boolean
+          nullable: false
+        verified: # field:di_verificado
+          description: 'Indicador de verificado.'
+          type: boolean
+          nullable: false
+        clerk: # field:di_funcionario > cobis..cl_funcionario.fu_login
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Clerk'
+        #di_fecha_ver
+        #di_principal
+        #di_barrio
+        #di_provincia
+        #di_tienetel
+        #di_rural_urb
+        #di_observacion
+        #di_obs_verificado
+        #di_extfin
+        #di_pais
+        #di_departamento
+        #di_tipo_prop
+        #di_rural_urbano
+        #di_codpostal
+        #di_casa
+        #di_calle
+        #di_codbarrio
+        #di_correspondencia
+        #di_alquilada
+        #di_cobro
+        #di_otrasenas
+        #di_canton
+        #di_distrito
+        #di_montoalquiler
+        #di_edificio
+        #di_so_igu_co
+        #di_fact_serv_pu
+        #di_nombre_agencia
+        #di_fuente_verif
+        #di_tiempo_reside
+        #di_nro
+        #di_nro_residentes
+        #di_nro_interno
+        #di_negocio
+        #di_poblacion
+        #di_referencias_dom
+        #di_otro_tipo
+        #di_localidad 
+
+    Geolocalization: #table: cobis..cl_direccion_geo
+      description: 'Grupo solidario de clientes que está interesado en adquirir algún producto financiero.'
+      type: object
+      properties:
+        #dg_ente
+        #dg_direccion
+        #dg_lat_coord
+        #dg_lat_grad
+        #dg_lat_min
+        latitude: #field:dg_lat_seg
+          description: 'Dato de latitud.'
+          type: number
+          format: float
+        #dg_long_coord
+        #dg_long_grad
+        #dg_long_min        
+        longitude: #field:dg_long_seg
+          description: 'Dato de longitud.'
+          type: number
+          format: float     
+        #dg_path_croquis
+        #dg_secuencial
+
+    LegalPerson: # table: cobis..cl_ente (parcial - persona jurídica), cobis..cl_ente_aux (parcial) TODO: Completar.
+      description: 'Cliente o prospecto de cliente de tipo persona natural que está interesado en adquirir un producto financiero.'
+      type: object
+      properties:
+        code: #field:en_ente
+          $ref: '#/components/schemas/CustomerCode'
+        subtype: #field:en_subtipo: 
+          description: > 
+            'Indica el tipo de cliente:'
+            * P: Persona
+            * C: Compañía 
+          type: string
+          maxLength: 1
+          enum: [P, C]
+        identification: #field:en_ced_ruc > Identification.number
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Identification'
+          description: 'Identificación del cliente o prospecto.'
+        # field:en_tipo_ced > Identificacion.type
+        name: # field:en_nombre
+          description: 'Nombres.'
+          type: string
+          minLength: 1
+          maxLength: 64
+        status:
+          description: 'Estado.'
+          type: string
+          minLength: 1
+          maxLength: 1
+        subsidiary: # field:en_filial
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Subsidiary'
+          description: 'Filial.'          
+        branch: # field:en_oficina
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Branch'
+          description: 'Oficina.'
+        creationDate: # field:en_fecha_crea
+          description: 'Fecha de creación.'
+          type: string
+          format: date-time
+        lastUpdatedDate: # field:en_fecha_mod
+          description: 'Fecha de la última modificación.'
+          type: string
+          format: date-time
+        #field:en_direccion
+        #field:en_referencia
+        #field:en_casilla
+        producerType: #field:en_casilla_def
+          $ref: '#/components/schemas/ProducerType'
+        #field:en_tipo_dp
+        #field:en_balance
+        #field:en_grupo
+        #field:en_pais  > Identificacion.issueCity.country.code
+        #field:field:en_oficial
+        #field:en_actividad
+        #field:en_retencion
+        #field:en_mala_referencia
+        comment: #field:en_comentario
+          description: 'Comentarios.'
+          type: string
+          maxLength: 254
+        #field:en_cont_malas
+        #field:s_tipo_soc_hecho
+        #field:en_sector
+        #field:en_referido
+        #field:en_nit
+        validatedDocument: #field:en_doc_validado
+          description: 'Indica si el número de documento está validado.'
+          type: boolean
+          nullable: false
+        reportedInSuperBan: #field:en_rep_superban
+          description: 'Indica si el cliente está reportado en SuperBan.'
+          type: boolean
+          nullable: false           
+        #field:p_sexo
+        #field:p_fecha_nac
+        #field:p_ciudad_nac
+        #field:p_lugar_doc  > Identificacion.issueCity.code
+        #field:p_profesion
+        #field:p_pasaporte
+        #field:p_estado_civil
+        #field:p_num_cargas
+        #field:p_num_hijos
+        income: #field:p_nivel_ing
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'
+        outgoings: #field:p_nivel_egr
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                         
+        #field:p_nivel_estudio
+        typeOfPerson: #field:p_tipo_persona
+          $ref: '#/components/schemas/TypeOfPerson'   
+        #field:p_tipo_vivienda
+        #field:p_calif_cliente
+        #field:p_personal
+        #field:p_propiedad
+        #field:p_trabajo
+        #field:p_soc_hecho
+        issueDate: #field:p_fecha_emision
+          description: 'Fecha de emisión.'
+          type: string
+          format: date-time        
+        #field:p_fecha_expira
+        #field:c_cap_suscrito
+        #field:en_asosciada
+        qualification: #field:c_posicion
+          $ref: '#/components/schemas/Qualification' 
+        typeOfCompany: #field:c_tipo_compania
+          $ref: '#/components/schemas/TypeOfCompany'         
+        #field:c_rep_legal
+        assets: #field:c_activo
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'        
+        liabilities: #field:c_pasivo
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'        
+        group: #field:c_es_grupo
+          description: 'Indica si es un grupo.'
+          type: boolean
+          nullable: false        
+        #field:c_capital_social
+        #field:c_reserva_legal
+        #field:c_fecha_const
+        fullname: #en_nomlar
+          description: 'Nombre completo de la compañía.'
+          type: string
+          maxLength: 254          
+        #field:c_plazo
+        #field:c_direccion_domicilio
+        #field:c_fecha_inscrp
+        #field:c_fecha_aum_capital
+        #field:c_cap_pagado
+        #field:c_tipo_nit
+        kindOfSociety: #field:c_tipo_soc
+          $ref: '#/components/schemas/KindOfSociety'
+        totalAssets: #field:c_total_activos
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'        
+        employeesNumber: #field:c_num_empleados
+          description: 'Número de empleados.'
+          type: integer
+          format: int32
+          maximum: 32767  
+        acronym: #field:c_sigla
+          description: 'Sigla de la compañía.'
+          type: string
+          maximum: 25          
+        #field:c_escritura
+        #field:c_notaria
+        #field:c_ciudad
+        #field:c_fecha_exp
+        #field:c_fecha_vcto
+        #field:c_camara
+        #field:c_registro
+        #field:c_grado_soc
+        #field:c_fecha_registro
+        #field:c_fecha_modif
+        #field:c_fecha_verif
+        valid: #field:c_vigencia
+          description: 'Indicador de vigencia.'
+          type: boolean
+          nullable: false        
+        verified: #field:c_verificado
+          description: 'Indicador de verificado.'
+          type: boolean
+          nullable: false        
+        #field:c_funcionario
+        customerSituation: #field:en_situacion_cliente
+          $ref: '#/components/schemas/CustomerSituation'
+        technicalEqity: #field:en_patrimonio_tec
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'
+        grossEquityDate: #field:en_fecha_patri_bruto
+          description: 'Fecha de patrimonio bruto.'
+          type: string
+          format: date-time         
+        largeContributor: #field:en_gran_contribuyente
+          description: 'Indica si es gran contribuyente.'
+          type: boolean
+          nullable: false           
+        #field:en_calificacion
+        incomeStatement: #field:en_reestructurado
+          description: 'Declara renta.'
+          type: boolean
+          nullable: false         
+        #field:en_concurso_acreedores
+        #field:en_concordato
+        linkage: #field:en_vinculacion
+          description: 'Indica si es por vinculación.'
+          type: boolean
+          nullable: false           
+        typeOfRelationShip: #field:en_tipo_vinculacion
+          $ref: '#/components/schemas/TypeOfRelationShip'        
+        #field:en_oficial_sup
+        #field:en_cliente
+        preferencialCustomer: #field:en_preferen
+          description: 'Indica si el cliente es preferencial.'
+          type: boolean
+          nullable: false          
+        #field:c_edad_laboral_promedio
+        #field:c_empleados_ley_50
+        exempt: #field:en_exc_sipla
+          description: 'Exento de reporte SIPLA.'
+          type: boolean
+          nullable: false         
+        exempt3000: #field:en_exc_por2
+          description: 'Exento 3/000.'
+          type: boolean
+          nullable: false          
+        #field:en_digito
+        #field:p_depa_nac
+        #field:p_pais_emi
+        #field:p_depa_emi
+        category: #field:en_categoria
+          $ref: '#/components/schemas/Category'
+        #field:en_emala_referencia
+        #field:en_banca
+        #field:c_total_pasivos
+        #field:en_pensionado
+        exemptRIOE: #field:en_rep_sib
+          description: 'Exento RIOE.'
+          type: boolean
+          nullable: false         
+        #field:en_max_riesgo
+        #field:en_riesgo
+        #field:en_mries_ant
+        #field:en_fmod_ries
+        #field:en_user_ries
+        #field:en_reservado
+        indebtednessFinancialSector: #field:en_pas_finan
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'        
+        indebtedDateFinancialSector: #field:en_fpas_finan
+          description: 'Fecha de endeudamiento en el sector financiero.'
+          type: string
+          format: date-time         
+        #field:en_fbalance
+        manageInternationalOperations: #field:en_relacint
+          description: 'Indica si maneja operaciones internacionales.'
+          type: boolean
+          nullable: false         
+        nonOperatingIncome: #field:en_otringr
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Amount'                
+        #field:en_exento_cobro
+        documentsInFolders: #field:en_doctos_carpeta
+          description: 'Indica si tiene documentos en carpetas.'
+          type: boolean
+          nullable: false         
+        #field:en_oficina_prod
+        #field:en_accion
+        #field:en_procedencia
+        #field:en_fecha_negocio
+        #field:en_estrato
+        #field:en_recurso_pub
+        #field:en_influencia
+        #field:en_persona_pub
+        #field:en_victima
+        #field:en_bancarizado
+        #field:en_alto_riesgo
+        #field:en_fecha_riesgo
+        #field:en_estado
+        #field:p_c_apellido
+        #field:p_s_nombre
+        #field:en_calif_cartera
+        #field:en_cod_otro_pais
+        #field:en_ingre
+        #field:en_nacionalidad
+        #field:p_dep_doc
+        #field:p_numord
+        #field:c_razon_social
+        #field:c_segmento
+        #field:en_cem
+        #field:en_promotor
+        #field:en_inss
+        #field:en_licencia
+        #field:en_id_tutor
+        #field:en_nom_tutor
+        #field:en_referidor_ecu
+        #field:p_carg_pub
+        #field:p_rel_carg_pub
+        #field:p_situacion_laboral
+        #field:p_bienes
+        #field:en_otros_ingresos
+        #field:en_origen_ingresos
+        #field:c_codsuper
+        #field:en_nro_ciclo
+        #field:en_emproblemado
+        #field:en_dinero_transac
+        #field:en_manejo_doc
+        #field:en_persona_pep
+        #field:en_rfc
+        #field:en_ing_SN
+        #field:en_nac_aux
+        #field:en_banco
+        #field:en_pais_nac
+        #field:en_provincia_nac
+        #field:en_naturalizado
+        #field:en_forma_migratoria
+        #field:en_nro_extranjero
+        #field:en_calle_orig
+        #field:en_exterior_orig
+        #field:en_estado_orig
+        #field:en_pais_nac_c
+        #field:en_naturalizado_c
+        #field:en_forma_mig_c
+        #field:en_numero_ext_c
+        #field:en_tipo_iden_c
+        #field:en_numero_iden_c
+        #field:en_localidad
+        #field:en_calle_orig_c
+        #field:en_exterior_orig_c
+        #field:en_estado_orig_c
+        #field:en_escolaridad_c
+        #field:en_ocupacion_c
+        #field:en_actividad_c
+        #field:en_dependientes_c
+        #field:en_ident_tipo_c
+        #field:en_ident_num_c
+        #field:en_email_c
+        electronicSignature: #field:en_firma_electronica
+          description: 'Firma electrónica'
+          type: string
+          maxLength: 30        
+        
+        #TABLA AUXILIAR
+        #field:ea_ente
+        #field:ea_estado
+        #field:ea_observacion_aut
+        #field:ea_contrato_firmado
+        #field:ea_menor_edad
+        #field:ea_conocido_como
+        #field:ea_cliente_planilla
+        #field:ea_cod_risk
+        #field:ea_sector_eco
+        #field:ea_actividad
+        #field:ea_lin_neg
+        #field:ea_seg_neg
+        #field:ea_ejecutivo_con
+        #field:ea_suc_gestion
+        #field:ea_constitucion
+        #field:ea_remp_legal
+        #field:ea_apoderado_legal
+        #field:ea_no_req_kyc_comp
+        #field:ea_fuente_ing
+        #field:ea_act_prin
+        #field:ea_detalle
+        #field:ea_act_dol
+        #field:ea_cat_aml
+        #field:ea_fecha_vincula
+        #field:ea_observacion_vincula
+        #field:ea_ced_ruc
+        #field:ea_discapacidad
+        #field:ea_tipo_discapacidad
+        #field:ea_ced_discapacidad
+        #field:ea_id_prefijo
+        #field:ea_id_sufijo
+        #field:ea_duplicado
+        #field:ea_nivel_egresos
+        #field:ea_ifi
+        #field:ea_asfi
+        #field:ea_path_foto
+        #field:ea_nit
+        #field:ea_nit_venc
+        #field:ea_num_testimonio
+        #field:ea_indefinido
+        #field:ea_fecha_vigencia
+        #field:ea_nombre_notaria
+        #field:ea_nombre_notario
+        #field:ea_safie
+        #field:ea_sigaf
+        #field:ea_tipo_creacion
+        #field:ea_ventas
+        #field:ea_ot_ingresos
+        #field:ea_ct_ventas
+        #field:ea_ct_operativo
+        #field:ea_ant_nego
+        #field:ea_cta_banco
+        #field:ea_nro_ciclo_oi
+        #field:ea_partner
+        #field:ea_lista_negra
+        #field:ea_tecnologico
+        #field:ea_fiel
+        #field:ea_estado_std
+        #field:ea_experiencia
+        #field:ea_fecha_report
+        #field:ea_fecha_report_resp
+        #field:ea_numero_ife
+        #field:ea_num_serie_firma
+        #field:ea_telef_recados
+        #field:ea_persona_recados
+        #field:ea_antecedente_buro
+        #field:ea_nivel_riesgo
+        #field:ea_puntaje_riesgo
+        #field:ea_negative_file
+        #field:ea_nivel_riesgo_cg
+        #field:ea_puntaje_riesgo_cg
+        #field:ea_calif_riesgo
+        #field:ea_ptos_riesgo
+        #field:ea_fecha_evaluacion
+        #field:ea_sum_vencido
+        #field:ea_num_vencido
+        #field:ea_calif_buro
+        #field:ea_calif_3sis
+        #field:ea_calif_cliente
+        #field:ea_puntaje_efl
+  
+    NaturalPerson: # table: cobis..cl_ente (parcial), cobis..cl_ente_aux (parcial) TODO: Revisar implementación, definir persona natural y jurídica.
+      description: 'Cliente o prospecto de cliente de tipo persona natural que está interesado en adquirir un producto financiero.'
+      type: object
+      properties:
+        code: #field:en_ente
+          $ref: '#/components/schemas/CustomerCode'
+        subtype: #en_subtipo: 
+          description: > 
+            'Indica el tipo de cliente:'
+            * P: Persona
+            * C: Compañía 
+          type: string
+          maxLength: 1
+          enum: [P, C]
+        identification: #field:en_ced_ruc > Identification.number
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Identification'
+          description: 'Identificación del cliente o prospecto.'
+        # field:en_tipo_ced > Identificacion.type
+        names: # field:en_nombre
+          description: 'Nombres.'
+          type: string
+          minLength: 1
+          maxLength: 64
+        surname: # field:p_p_apellido
+          description: 'Primer apellido.'
+          type: string
+          minLength: 1
+          maxLength: 16
+        secondSurname: # field:p_s_apellido
+          description: 'Segundo apellido.'
+          type: string
+          minLength: 1
+          maxLength: 16
+        status: # field:en_estado
+          description: 'Estado.'
+          type: string
+          minLength: 1
+          maxLength: 1
+        subsidiary: # field:en_filial
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Subsidiary'
+        branch: # field:en_oficina
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Branch'
+        enrollmentDate: # field:en_fecha_crea
+          description: 'Fecha de creación.'
+          type: string
+          format: date-time
+        lastUpdatedDate: # field:en_fecha_mod
+          description: 'Fecha de la última modificación.'
+          type: string
+          format: date-time
+        #field:en_direccion
+        #field:en_referencia
+        #field:en_casilla
+        #field:en_casilla_def
+        #field:en_tipo_dp
+        #field:en_balance
+        #field:en_grupo
+        #field:en_pais > Identificacion.issueCity.country.code
+        officer: #field:en_oficial
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Officer'
+        activity: #field:en_actividad
+          $ref: '#/components/schemas/Activity'
+        retention: #field:en_retencion
+          description: 'Indica si el cliente tiene retención.'
+          type: boolean
+          nullable: false
+        #field:en_mala_referencia
+        comment: #en_comentario
+          description: 'Comentarios'
+          type: string
+          maxLength: 254
+        #field:en_cont_malas
+        #field:s_tipo_soc_hecho
+        #field:en_sector
+        #field:en_referido
+        #field:en_nit
+        validatedDocument: #field:en_doc_validado
+          description: 'Indica si el número de documento está validado.'
+          type: boolean
+          nullable: false
+        #field:en_rep_superban
+        gender: #field: p_sexo
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Gender'
+        birthDate: #field:p_fecha_nac
+          description: 'Fecha de nacimiento'
+          type: string
+          format: date
+        birthCity: # field:p_ciudad_nac
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/City'
+          description: 'Ciudad de nacimiento.'
+        #field:p_lugar_doc > Identificacion.issueCity.code
+        profession: #field:p_profesion
+          $ref: '#/components/schemas/Profession'
+        #field:p_pasaporte
+        maritalStatus: #field:p_estado_civil
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/MaritalStatus'
+        #field:p_num_cargas
+        #field:p_num_hijos
+        #field:p_nivel_ing
+        #field:p_nivel_egr
+        levelOfEducation: #field:p_nivel_estudio
+          $ref: '#/components/schemas/LevelOfEducation'
+        typeOfPerson: #field:p_tipo_persona
+          $ref: '#/components/schemas/TypeOfPerson'        
+        typeOfHousing: #field:p_tipo_vivienda
+          $ref: '#/components/schemas/TypeOfHousing'        
+        CustomerQualification: #field:p_calif_cliente
+          $ref: '#/components/schemas/CustomerQualification'         
+        #field:p_personal
+        #field:p_propiedad
+        #field:p_trabajo
+        #field:p_soc_hecho
+        #field:p_fecha_emision
+        #field:p_fecha_expira
+        #field:c_cap_suscrito
+        #field:en_asosciada
+        #field:c_posicion
+        #field:c_tipo_compania
+        #field:c_rep_legal
+        #field:c_activo
+        #field:c_pasivo
+        #field:c_es_grupo
+        #field:c_capital_social
+        #field:c_reserva_legal
+        #field:c_fecha_const
+        #field:en_nomlar
+        #field:c_plazo
+        #field:c_direccion_domicilio
+        #field:c_fecha_inscrp
+        #field:c_fecha_aum_capital
+        #field:c_cap_pagado
+        #field:c_tipo_nit
+        #field:c_tipo_soc
+        #field:c_total_activos
+        #field:c_num_empleados
+        #field:c_sigla
+        #field:c_escritura
+        #field:c_notaria
+        #field:c_ciudad
+        #field:c_fecha_exp
+        #field:c_fecha_vcto
+        #field:c_camara
+        #field:c_registro
+        #field:c_grado_soc
+        #field:c_fecha_registro
+        #field:c_fecha_modif
+        #field:c_fecha_verif
+        #field:c_vigencia
+        #field:c_verificado
+        #field:c_funcionario
+        #field:en_situacion_cliente
+        #field:en_patrimonio_tec
+        #field:en_fecha_patri_bruto
+        #field:en_gran_contribuyente
+        #field:en_calificacion
+        #field:en_reestructurado
+        #field:en_concurso_acreedores
+        #field:en_concordato
+        #field:en_vinculacion
+        #field:en_tipo_vinculacion
+        #field:en_oficial_sup
+        #field:en_cliente
+        #field:en_preferen
+        #field:c_edad_laboral_promedio
+        #field:c_empleados_ley_50
+        #field:en_exc_sipla
+        #field:en_exc_por2
+        #field:en_digito
+        #field:p_depa_nac
+        #field:p_pais_emi
+        #field:p_depa_emi
+        #en_categoria
+        #field:en_emala_referencia
+        #field:en_banca
+        #field:c_total_pasivos
+        #field:en_pensionado
+        #field:en_rep_sib
+        #field:en_max_riesgo
+        #field:en_riesgo
+        #field:en_mries_ant
+        #field:en_fmod_ries
+        #field:en_user_ries
+        #field:en_reservado
+        #field:en_pas_finan
+        #field:en_fpas_finan
+        #field:en_fbalance
+        #field:en_relacint
+        #field:en_otringr
+        #field:en_exento_cobro
+        #field:en_doctos_carpeta
+        #field:en_oficina_prod
+        #field:en_accion
+        #field:en_procedencia
+        #field:en_fecha_negocio
+        #field:en_estrato
+        #field:en_recurso_pub
+        #field:en_influencia
+        #field:en_persona_pub
+        #field:en_victima
+        #field:en_bancarizado
+        #field:en_alto_riesgo
+        #field:en_fecha_riesgo
+        #field:en_estado
+        #field:p_c_apellido
+        #field:p_s_nombre
+        #field:en_calif_cartera
+        #field:en_cod_otro_pais
+        #field:en_ingre
+        #field:en_nacionalidad
+        #field:p_dep_doc
+        #field:p_numord
+        #field:c_razon_social
+        #field:c_segmento
+        #field:en_cem
+        #field:en_promotor
+        #field:en_inss
+        #field:en_licencia
+        #field:en_id_tutor
+        #field:en_nom_tutor
+        #field:en_referidor_ecu
+        #field:p_carg_pub
+        #field:p_rel_carg_pub
+        #field:p_situacion_laboral
+        #field:p_bienes
+        #field:en_otros_ingresos
+        #field:en_origen_ingresos
+        #field:c_codsuper
+        cycleNumber:  #field: en_nro_ciclo
+          type: integer
+          format: int32
+        #field:en_emproblemado
+        #field:en_dinero_transac
+        #field:en_manejo_doc
+        #field:en_persona_pep
+        taxIdentification: #field:en_rfc > Identification.number
+          allOf: 
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Identification'
+          description: 'Identificación tributaria.'
+        #field:en_ing_SN
+        #field:en_nac_aux
+        externalCode: #field:en_banco
+          description: 'Código de referencia externo.'
+          type: string
+          maxLength: 30
+        birthCountry: #field: en_pais_nac
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Country'
+          description: 'Pais de nacimiento.'
+        #field:en_provincia_nac
+        #field:en_naturalizado
+        #field:en_forma_migratoria
+        #field:en_nro_extranjero
+        #field:en_calle_orig
+        #field:en_exterior_orig
+        #field:en_estado_orig
+        #field:en_pais_nac_c
+        #field:en_naturalizado_c
+        #field:en_forma_mig_c
+        #field:en_numero_ext_c
+        secondaryIdentification: #field:en_numero_iden_c > Identification.number, field:en_tipo_iden_c > Identification.type
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Identification'
+          description: 'Segunda identificación.'
+        #field:en_localidad
+        #field:en_calle_orig_c
+        #field:en_exterior_orig_c
+        #field:en_estado_orig_c
+        #field:en_escolaridad_c
+        #field:en_ocupacion_c
+        #field:en_actividad_c
+        #field:en_dependientes_c
+        #field:en_ident_tipo_c
+        #field:en_ident_num_c
+        #field:en_email_c
+        #field:en_firma_electronica
+        
+        #TABLA AUXILIAR
+        #ea_ente
+        cobisStatus: # field:ea_estado > cobis..cl_ente_aux.ea_estado
+          description: >
+            'Estado COBIS:'
+              * P: Prospecto
+              * A: Activo
+          type: string
+          enum: [P,A]
+          minLength: 1
+          maxLength: 1
+        #field:ea_observacion_aut
+        #field:ea_contrato_firmado
+        #field:ea_menor_edad
+        #field:ea_conocido_como
+        #field:ea_cliente_planilla
+        #field:ea_cod_risk
+        economicSector: #field:ea_sector_eco
+          $ref: '#/components/schemas/EconomicSector'        
+        #field:ea_actividad
+        #field:ea_lin_neg
+        #field:ea_seg_neg
+        #field:ea_ejecutivo_con
+        #field:ea_suc_gestion
+        #field:ea_constitucion
+        #field:ea_remp_legal
+        #field:ea_apoderado_legal
+        #field:ea_no_req_kyc_comp
+        sourceOfIncome: #field:ea_fuente_ing
+          $ref: '#/components/schemas/SourceOfIncome'        
+        #field:ea_act_prin
+        #field:ea_detalle
+        #field:ea_act_dol
+        #field:ea_cat_aml       
+        #field:ea_fecha_vincula
+        #field:ea_observacion_vincula
+        #field:ea_ced_ruc
+        #field:ea_discapacidad
+        disability: #field:ea_tipo_discapacidad
+          $ref: '#/components/schemas/Disability'        
+        #field:ea_ced_discapacidad
+        #field:ea_id_prefijo
+        #field:ea_id_sufijo
+        #field:ea_duplicado
+        levelOfOutgoings: #field:ea_nivel_egresos
+          $ref: '#/components/schemas/LevelOfOutgoings'         
+        #field:ea_ifi
+        #field:ea_asfi
+        #field:ea_path_foto
+        #field:ea_nit
+        #field:ea_nit_venc
+        #field:ea_num_testimonio
+        #field:ea_indefinido
+        #field:ea_fecha_vigencia
+        #field:ea_nombre_notaria
+        #field:ea_nombre_notario
+        #field:ea_safie
+        #field:ea_sigaf
+        #field:ea_tipo_creacion
+        #field:ea_ventas
+        #field:ea_ot_ingresos
+        #field:ea_ct_ventas
+        #field:ea_ct_operativo
+        #field:ea_ant_nego
+        #field:ea_cta_banco
+        #field:ea_nro_ciclo_oi
+        #field:ea_partner
+        #field:ea_lista_negra
+        #field:ea_tecnologico
+        #field:ea_fiel
+        #field:ea_estado_std
+        #field:ea_experiencia
+        #field:ea_fecha_report
+        #field:ea_fecha_report_resp
+        #field:ea_numero_ife
+        #field:ea_num_serie_firma
+        #field:ea_telef_recados
+        #field:ea_persona_recados
+        #field:ea_antecedente_buro
+        #field:ea_nivel_riesgo
+        #field:ea_puntaje_riesgo
+        #field:ea_negative_file
+        #field:ea_nivel_riesgo_cg
+        #field:ea_puntaje_riesgo_cg
+        #field:ea_calif_riesgo
+        #field:ea_ptos_riesgo
+        #field:ea_fecha_evaluacion
+        #field:ea_sum_vencido
+        #field:ea_num_vencido
+        #field:ea_calif_buro
+        #field:ea_calif_3sis
+        #field:ea_calif_cliente
+        #field:ea_puntaje_efl
+
+        #semofoSIC
+        emails:
+          description: 'Correos electrónicos.'
+          type: array
+          items:
+            $ref: '#/components/schemas/Email'
+        solidarityGroup:          
+          $ref: '#/components/schemas/SolidarityGroup'
+        addresses:
+          description: 'Direcciones de correspondencia.'
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+        phones:
+          description: 'Teléfonos de contacto.'
+          type: array
+          items:
+            $ref: '#/components/schemas/Phone'      
+        personalReferences:
+          description: 'Referencias personales del cliente.'
+          type: array
+          items:     
+            $ref: '#/components/schemas/PersonalReference'   
+        relationShips:
+          type: array
+          items: 
+            $ref: '#/components/schemas/RelationShip'  
+
+    PersonalReference: #table: cobis..cl_ref_personal
+      description: 'Negocios del cliente.'
+      type: object
+      properties:
+        #field: rp_persona
+        code: #field: rp_referencia
+          description: 'Código del negocio.'
+          type: integer
+          format: int32
+          minimum: 1                   
+        name: #field: rp_nombre
+          description: 'Nombres.'
+          type: string
+          minLength: 1
+          maxLength: 60        
+        surname: #field: rp_p_apellido
+          description: 'Primer apellido.'
+          type: string
+          minLength: 1
+          maxLength: 32        
+        secondSurname: #field: rp_s_apellido
+          description: 'Segundo apellido.'
+          type: string
+          minLength: 1
+          maxLength: 20        
+        address: #field: rp_direccion
+          description: 'Nombres.'
+          type: string
+          minLength: 1
+          maxLength: 255        
+        homePhone: #field: rp_telefono_d
+          description: 'Teléfono Domicilio.'
+          type: string
+          minLength: 1
+          maxLength: 12        
+        companyPhone: #field: rp_telefono_e
+          description: 'Teléfono Empresa.'
+          type: string
+          minLength: 1
+          maxLength: 12        
+        officePhone: #field: rp_telefono_o
+          description: 'Teléfono Oficina.'
+          type: string
+          minLength: 1
+          maxLength: 12        
+        #field: rp_parentesco
+        creationDate: # field:rp_fecha_registro
+          description: 'Fecha de creación.'
+          type: string
+          format: date-time
+        lastUpdatedDate: # field:rp_fecha_modificacion
+          description: 'Fecha de la última modificación.'
+          type: string
+          format: date-time        
+        valid: # field:rp_vigencia
+          description: 'Indicador de vigencia.'
+          type: boolean
+          nullable: false
+        verified: # field:rp_verificacion
+          description: 'Indicador de verificado.'
+          type: boolean
+          nullable: false     
+        clerk: #field: rp_funcionario > cobis..cl_funcionario.fu_login
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Clerk'        
+        #field: rp_descripcion
+        #field: rp_fecha_ver
+        #field: rp_departamento
+        #field: rp_ciudad
+        #field: rp_barrio
+        #field: rp_obs_verificado
+        #field: rp_calle
+        #field: rp_nro
+        #field: rp_colonia
+        #field: rp_localidad
+        #field: rp_municipio
+        #field: rp_estado
+        #field: rp_codpostal
+        #field: rp_pais
+        timeGetting: #field: rp_tiempo_conocido
+          description: 'Tiempo en el cual conoce a la persona que referencia.'
+          type: integer
+          format: int32
+          minimum: 1                           
+        email: #field: rp_direccion_e    
+          description: 'dirección de correo electrónico.'
+          type: string     
+          maxLength: 40     
+
+
+        # KEY ELEMENTS
+
+    Phone: # table: cobis..cl_telefono
+      description: 'Teléfono.'
+      type: object
+      properties:
+        #field:te_ente
+        #field:te_direccion       
+        code: #field:te_secuencial
+          $ref: '#/components/schemas/CodeNumber'           
+        number: #field:te_valor
+          description: 'Número de teléfono.'
+          type: string        
+          maxLength: 16        
+        type: #field:te_tipo_telefono
+          $ref: '#/components/schemas/PhoneType'
+        prefix: #field:te_prefijo
+          description: 'Prefijo.'
+          type: string        
+          maxLength: 10
+        creationDate: #field:te_fecha_registro
+          description: 'Fecha de creación del grupo de clientes.'
+          type: string
+          format: date-time
+        lastUpdatedDate: #field:te_fecha_mod
+          description: 'Fecha de última actualización del grupo de clientes.'
+          type: string
+          format: date-time                        
+        phoneOperator: #field:te_tipo_operador
+          $ref: '#/components/schemas/PhoneOperator'
+        area: #field:te_area
+          description: 'Área'
+          type: string
+          maxLength: 10
+        collectionManagement: #field:te_telf_cobro //TODO Validar traducción (Teléfono de para la gestión cobranza)
+          description: 'Indicador de teléfono para la gestión de cobranza.'
+          type: boolean
+          nullable: false       
+        clerk: # #field:te_funcionario > cobis..cl_funcionario.fu_login
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Clerk' 
+        valid: #field:te_verificado
+          description: 'Indicador de vigencia.'
+          type: boolean
+          nullable: false
+        #field:te_fecha_ver
+        #field:te_fecha_modificacion
+
+    RelationShip: #table: cobis..cl_instancia //TODO: Validar si va con el objeto Customer
+      description: 'Relaciones del cliente con otros clientes dentro del sistema.'
+      type: object
+      properties:        
+        code: #field: in_relacion
+          description: 'Código del negocio.'
+          type: integer
+          format: int32
+          minimum: 1         
+        customerLeft: #field: in_ente_i
+          allOf:
+            - $ref: '#/components/schemas/Customer'
+          description: 'Cliente al lado izquierdo de la relación.'
+        customerRight: #field: in_ente_d
+          allOf:
+           -  $ref: '#/components/schemas/Customer'
+          description: 'Cliente al lado derecho de la relación.'
+        side: #field: in_lado    
+          description: 'Indica el lado de la relación.'
+          type: string        
+          enum: [D,I]              
+        creationDate: #field: in_fecha
+          description: 'Fecha de creación.'
+          type: string
+          format: date-time         
+    
+    SolidarityGroup: #table: cobis..cl_grupo TODO: Definición de datos para un de grupos de clientes
+      description: 'Grupo solidario de clientes que está interesado en adquirir algún producto financiero.'
+      type: object
+      properties:
+        code: #field:gr_grupo
+          $ref: '#/components/schemas/SolidarityGroupCode'
+        name: #field  :gr_nombre
+          description: 'Nombre del grupo de clientes.'
+          type: string
+          minLength: 1
+          maxLength: 64
+        #	gr_representante
+        #	gr_compania
+        officer: #field:gr_oficial
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Officer'
+        creationDate: # field:gr_fecha_registro
+          description: 'Fecha de creación del grupo de clientes.'
+          type: string
+          format: date-time
+        lastUpdatedDate: # field:gr_fecha_modificacion
+          description: 'Fecha de última actualización del grupo de clientes.'
+          type: string
+          format: date-time
+        #	gr_ruc
+        #	gr_vinculacion
+        #	gr_tipo_vinculacion
+        #	gr_max_riesgo
+        #	gr_riesgo
+        #	gr_usuario
+        #	gr_reservado
+        #	gr_tipo_grupo
+        status: #field:gr_estado
+          description: >
+            'Estado:'
+              * C: Cancelado
+              * V: Vigente
+          type: string
+          enum: [C,V]
+          minLength: 1
+          maxLength: 1        
+        meetingAddress: #field:gr_dir_reunion
+          description: 'Dirección de reunión.'
+          type: string
+          maxLength: 125
+        meetingDay: #field:gr_dia_reunion
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/WeekDay'
+          description: 'Día de la reunión'
+        meetingHour: #field:gr_hora_reunion
+          description: 'Hora de la reunión.'
+          type: string
+          format: date-time
+        #	gr_comportamiento_pago
+        cycleNumber: #field:gr_num_ciclo
+          description: 'Numero de prestamo definido para operaciones de cartera de credito.' # TODO verificar descripcion para este campo
+          type:  integer
+          format: int32
+        #	gr_incluir
+        #	gr_consec_tipo
+        #	gr_suplente
+        #	gr_tipo
+        account: #field:gr_cta_grupal
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Account'
+          description: 'Cuenta grupal.'
+        branch: # field:gr_sucursal
+          allOf:
+            - $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/Branch'
+          description: 'Oficina.'
+        #	gr_titular1
+        #	gr_titular2
+        #	gr_lugar_reunion
+        #	gr_tiene_ctagr
+        #	gr_tiene_ctain
+        #	gr_dias_atraso
+        #	gr_gar_liquida
+
+    # CATALOGS
+    Activity: # cobis..cl_catalogo[table:781:cl_actividad]
+      description: 'Tipo de actividad del cliente.'
+      properties:
+        code:
+          description: 'Código del tipo de actividad. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_actividad](http://www.cobiscorp.com/api/catalogo#cl_actividad).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    AddressType: # cobis..cl_catalogo[table:202:cl_tdireccion]
+      description: 'Tipo de dirección.'
+      properties:
+        code:
+          description: 'Código del tipo de dirección. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_tdireccion](http://www.cobiscorp.com/api/catalogo#cl_tdireccion).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    AMLCategory: # cobis..cl_catalogo[table:399:cl_categoria_AML] //TODO validar para que sirve
+      description: 'Categoría AML.'
+      properties:
+        code:
+          description: 'Código del tipo de categoría AML. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_categoria_AML](http://www.cobiscorp.com/api/catalogo#cl_categoria_AML).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    Category: # cobis..cl_catalogo[table:271:cl_tipo_cliente]
+      description: 'Categoría del cliente.'
+      properties:
+        code:
+          description: 'Código del tipo de categoría AML. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_tipo_cliente](http://www.cobiscorp.com/api/catalogo#cl_tipo_cliente).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    CustomerQualification: # cobis..cl_catalogo[table:2016:cr_color_calificacion]
+      description: 'Calificación del cliente.'
+      properties:
+        code:
+          description: 'Código del tipo de calificación. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cr_color_calificacion](http://www.cobiscorp.com/api/catalogo#cr_color_calificacion).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    CustomerSituation: # cobis..cl_catalogo[table:207:cl_situacion_cliente]
+      description: 'tipo de situación del cliente.'
+      properties:
+        code:
+          description: 'Código del tipo de calificación. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_situacion_cliente](http://www.cobiscorp.com/api/catalogo#cl_situacion_cliente).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    Disability: # cobis..cl_catalogo[table:396:cl_discapacidad]
+      description: 'Tipo de discapacidad del cliente.'
+      properties:
+        code:
+          description: 'Código del tipo de discapacidad. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_discapacidad](http://www.cobiscorp.com/api/catalogo#cl_discapacidad).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    EconomicSector: # cobis..cl_catalogo[table:400:cl_sector_economico]
+      description: 'Sector económico.'
+      properties:
+        code:
+          description: 'Código del sector económico. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_sector_economico](http://www.cobiscorp.com/api/catalogo#cl_sector_economico).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    KindOfSociety: # cobis..cl_catalogo[table:217:cl_tip_soc]
+      description: 'Tipo de sociedad.'
+      properties:
+        code:
+          description: 'Código del tipo de sociedad. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_tip_soc](http://www.cobiscorp.com/api/catalogo#cl_tip_soc).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    LevelOfEducation: # cobis..cl_catalogo[table:219:cl_nivel_estudio]
+      description: 'Nivel de estudios.'
+      properties:
+        code:
+          description: 'Código del nivel de estudios. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_nivel_estudio](http://www.cobiscorp.com/api/catalogo#cl_nivel_estudio).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    LevelOfOutgoings: # cobis..cl_catalogo[table:398:cl_nivel_egresos]
+      description: 'Nivel de egresos.'
+      properties:
+        code:
+          description: 'Código del nivel de egresos. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_nivel_egresos](http://www.cobiscorp.com/api/catalogo#cl_nivel_egresos).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    PhoneOperator: # cobis..cl_catalogo[table:378:cl_tipo_operador]
+      description: 'Operador telefónico.'
+      properties:
+        code:
+          description: 'Código del Operador telefónico. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_tipo_operador](http://www.cobiscorp.com/api/catalogo#cl_tipo_operador).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+              $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    PhoneType: # cobis..cl_catalogo[table:203:cl_ttelefono]
+      description: 'Tipo de teléfono.'
+      properties:
+        code:
+          description: 'Código del tipo de teléfono. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_ttelefono](http://www.cobiscorp.com/api/catalogo#cl_ttelefono).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+              $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    ProducerType: # cobis..cl_catalogo[table:244:cl_tipo_productor]
+      description: 'Tipo de productor.'
+      properties:
+        code:
+          description: 'Código del tipo de productos. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_tipo_productor](http://www.cobiscorp.com/api/catalogo#cl_tipo_productor).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+              $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    Profession: # cobis..cl_catalogo[table:218:cl_profesion]
+      description: 'Tipo de profesión del cliente.'
+      properties:
+        code:
+          description: 'Código del tipo de profesión. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_profesion](http://www.cobiscorp.com/api/catalogo#cl_profesion).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+              $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    Qualification: # cobis..cl_catalogo[table:221:cl_calif_cliente]
+      description: 'Calificación del cliente.'
+      properties:
+        code:
+          description: 'Código del tipo de calificación. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_calif_cliente](http://www.cobiscorp.com/api/catalogo#cl_calif_cliente).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    Sector: # cobis..cl_catalogo[table:19:cl_sector]
+      description: 'Sector donde se encuentra ubicada la dirección.'
+      properties:
+        code:
+          description: 'Código del sector de la dirección. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_sector](http://www.cobiscorp.com/api/catalogo#cl_sector).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    SourceOfIncome: # cobis..cl_catalogo[table:409:cl_fuente_ingreso]
+      description: 'Sector donde se encuentra ubicada la dirección.'
+      properties:
+        code:
+          description: 'Código del sector de la dirección. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_fuente_ingreso](http://www.cobiscorp.com/api/catalogo#cl_fuente_ingreso).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    TypeOfCompany: # cobis..cl_catalogo[table:216:cl_nat_jur]
+      description: 'Tipo de compañía.'
+      properties:
+        code:
+          description: 'Código del tipo de vivienda. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_nat_jur](http://www.cobiscorp.com/api/catalogo#cl_nat_jur).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    TypeOfHousing: # cobis..cl_catalogo[table:220:cl_tipo_vivienda]
+      description: 'Tipo de vivienda.'
+      properties:
+        code:
+          description: 'Código del tipo de vivienda. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_tipo_vivienda](http://www.cobiscorp.com/api/catalogo#cl_tipo_vivienda).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    TypeOfPerson: # cobis..cl_catalogo[table:405:cl_tipo_persona]
+      description: 'Tipo de persona.'
+      properties:
+        code:
+          description: 'Código del tipo de persona. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_tipo_persona](http://www.cobiscorp.com/api/catalogo#cl_tipo_persona).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    TypeOfRelationShip: # cobis..cl_catalogo[table:222:cl_relacion_banco]
+      description: 'Tipo de relación con el banco.'
+      properties:
+        code:
+          description: 'Código del tipo de relación. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_relacion_banco](http://www.cobiscorp.com/api/catalogo#cl_relacion_banco).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus'
+
+    Zone: # cobis..cl_catalogo[table:213:cl_zona]
+      description: 'Zona donde se encuentra ubicada la dirección.'
+      properties:
+        code:
+          description: 'Código de la zona de la dirección. Ver listado en: [http://www.cobiscorp.com/api/catalogo#cl_zona](http://www.cobiscorp.com/api/catalogo#cl_zona).' # TODO: Actualizar enlace a documentación de catálogos dinámicos.
+          type: string
+          minLength: 1
+          maxLength: 1
+        description:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogDescription'
+        status:
+          $ref: 'https://raw.githubusercontent.com/eliashel/cobisapi/master/private/domains/general-purpose/admin/v1/COBISAdminDomain.yaml#/components/schemas/CatalogStatus' 
+
+    # KEYS
+    CodeNumber: #virtual object
+      description: 'Código identificador.'
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 255
+
+    CustomerCode:
+      description: 'Código del cliente o prospecto.'
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 9999999999
+
+    SolidarityGroupCode:
+      description: 'Código del grupo de clientes.'
+      type: integer
+      format: int32
+      minimum: 1
